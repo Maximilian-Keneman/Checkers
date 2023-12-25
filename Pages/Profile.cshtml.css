@@ -1,0 +1,42 @@
+﻿.profile-head {
+    display: flex;
+    background-color: #70dd9e;
+    border-radius: 5px 5px 0 0;
+}
+
+.name {
+    float: left;
+    width: 285px;
+    align-self: flex-end;
+}
+
+.data {
+
+}
+
+.edit {
+    float: right;
+    margin: 4px 4px auto auto;
+    width: 23px;
+    height: 23px;
+    padding: inherit;
+    border: none;
+    background-color: #bc68ff;
+    border-radius: 3px;
+}
+.edit:hover {
+    opacity: 80%;
+}
+
+.icon {
+    float: left;
+    width: 50pt;
+    height:50pt;
+}
+
+.pie {
+    width: 200px;
+    height: 200px;
+    background-image: conic-gradient(grey var(--null-games), green var(--null-games), green var(--wins), red var(--wins));
+    border-radius: 50%
+}

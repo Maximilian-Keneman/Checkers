@@ -1,0 +1,28 @@
+﻿@page
+@model Checkers.Pages.UsersModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="text-center">
+    <table>
+        <tr>
+            <th>Login</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>WinRate</th>
+        </tr>
+        @{
+        foreach (var user in Model.Users)
+            {
+                string winRate = user.PlayedGames == 0 ? "No played" : (100 * user.WinsGames / user.PlayedGames) + "%";
+                <tr class="user-row">
+                    <td><a href="/Profile/@user.ID">@user.Login</a></td>
+                    <td><a href="/Profile/@user.ID">@user.Name</a></td>
+                    <td><a href="/Profile/@user.ID">@user.Email</a></td>
+                    <td><a href="/Profile/@user.ID">@winRate</a></td>
+                </tr>
+            }
+        }
+    </table>
+</div>

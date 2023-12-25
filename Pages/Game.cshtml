@@ -1,0 +1,18 @@
+﻿@page
+@model GameModel
+@{
+    ViewData["Title"] = "Game page";
+    int CellSize = 60;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Checkers</h1>
+    <canvas id="gamebox" width="@(CellSize * 8)" height="@(CellSize * 8)"></canvas>
+    @{#if DEBUG}
+        <button onclick="SaveGameResult(true)">Win</button>
+        <button onclick="SaveGameResult(false)">Loose</button>
+    @{#endif}
+    <script src="~/js/stateCheckers.js"></script>
+    <script src="~/js/drawCheckers.js"></script>
+    <script src="~/js/checkers.js"></script>
+</div>

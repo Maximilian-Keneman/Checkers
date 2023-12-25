@@ -1,0 +1,20 @@
+﻿@model LayoutModel
+<link rel="stylesheet" href="/css/userForm.css" asp-append-version="true" />
+<div id="modalbackground" class="modal">
+    <div id="modalform" class="modal-content animate">
+        <div class="imgcontainer">
+            <span onclick="CloseForm()" class="close" title="Close Modal">×</span>
+        </div>
+        <ul class="user-list">
+            <li>
+                @Html.ActionLink("Profile", "Index", "Profile", new { id = Model.HttpContext.Session.GetInt32("userid") })
+            </li>
+            <!-- li>
+                <a asp-area="" asp-page="/Users">Friends</a>
+            </li -->
+            <li>
+                <a asp-controller="Profile" asp-action="Exit">Exit</a>
+            </li>
+        </ul>
+    </div>
+</div>

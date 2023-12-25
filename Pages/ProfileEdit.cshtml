@@ -1,0 +1,27 @@
+﻿@page
+@model ProfileEditModel
+@{
+    ViewData["Title"] = "Profile - " + Model.Player.Name + " - Edit";
+}
+<link rel="stylesheet" href="/css/userForm.css" asp-append-version="true" />
+<div>
+    <form class="form-container" method="post" asp-page-handler="Edit">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Your name" value="@Model.Player.Name" id="uname" name="username" required autocomplete="off" />
+
+        <label for="pswch"><b>Change password</b></label>
+        <input type="checkbox" change id="pswch" name="passwordchanged" />
+        <input type="password" id="psw" name="password" autocomplete="off" disabled="disabled" />
+
+        <label for="rpsw"><b>Repeat password</b></label>
+        <input type="password" id="rpsw" name="reppassword" autocomplete="off" disabled="disabled" />
+
+        <label for="email"><b>E-mail</b></label>
+        <input type="email" placeholder="Enter E-mail" value="@Model.Player.Email" id="email" name="email" required autocomplete="on" />
+
+        <button type="submit" class="long-button" style="float:inline-start;width:50%;">Accept</button>
+        <button type="button" onclick="document.location = '@("Profile/" + Model.Player.ID)'" class="long-button" style="background-color:red;float:inline-end;width:50%;">Cancel</button>
+    </form>
+    <button type="button" onclick="DeleteProfile()" class="long-button" style="background-color:darkred">Delete profile</button>
+    <script src="/js/editForm.js"></script>
+</div>

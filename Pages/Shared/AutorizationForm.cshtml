@@ -1,0 +1,37 @@
+﻿<link rel="stylesheet" href="/css/userForm.css" asp-append-version="true" />
+<div id="modalbackground" class="modal">
+    <div id="modalform" class="modal-content animate">
+        <div class="imgcontainer">
+            <span onclick="CloseForm()" class="close" title="Close Modal">×</span>
+        </div>
+
+        <form class="form-container login-form" method="post" asp-page-handler="SignIn">
+            <label for="uname"><b>Login</b></label>
+            <input type="text" placeholder="Enter Username" id="uname" name="login" required autocomplete="on">
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" id="psw" name="password" required autocomplete="on">
+            <span class="psw">Forgot <a href="#">password?</a></span>
+
+            <button type="submit" class="long-button">Login</button>
+            <p class="message">Need an account? <a href="#" onclick="changeForm()">Register!</a></p>
+        </form>
+        <form class="form-container register-form" method="post" asp-page-handler="Register">
+            <label for="reguname"><b>Login</b></label>
+            <input type="text" placeholder="Enter Username" id="reguname" name="login" required autocomplete="off">
+
+            <label for="regpsw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" id="regpsw" name="password" required autocomplete="off">
+
+            <label for="rpsw"><b>Repeat password</b></label>
+            <input type="password" placeholder="Repeat Password" id="rpsw" name="repeatPassword" required autocomplete="off">
+
+            <label for="email"><b>E-mail</b></label>
+            <input type="email" placeholder="Enter E-mail" id="email" name="email" required autocomplete="on">
+
+            <button type="submit" class="long-button">Register</button>
+            <p class="message">Already have an account? <a href="#" onclick="changeForm()">Sign in!</a></p>
+        </form>
+    </div>
+</div>
+<script src="~/js/autorizationForm.js"></script>

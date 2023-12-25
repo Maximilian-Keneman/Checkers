@@ -1,0 +1,34 @@
+﻿@page "{id:int}"
+@model ProfileModel
+@{
+    int Wins = 0;
+    if (Model.HasPlayer)
+    {
+        ViewData["Title"] = "Profile - " + Model.Player.Name;
+        if (Model.Player.PlayedGames > 0)
+            Wins = 100 * Model.Player.WinsGames / Model.Player.PlayedGames;
+    }
+    else
+        ViewData["Title"] = "Profile - Empty place";
+}
+<div class="profile-head">
+    <!-- img class="icon" / -->
+    <h1 class="name">@(Model.HasPlayer ? Model.Player.Name : "Empty place")</h1>
+    @if (Model.IsSelfUser)
+    {
+        <button onclick="document.location = '/ProfileEdit'" class="edit">E</button>
+    }
+</div>
+@if (Model.HasPlayer)
+{
+    <div>
+        <dl style="--wins: @Wins%; --null-games: @(Model.Player.PlayedGames == 0 ? 100 : 0)%" class="data">
+            <dt>E-mail</dt><dd>@Model.Player.Email</dd>
+            <dt>Game statistic</dt>
+            <dd>@Model.Player.PlayedGames Games played</dd>
+            <dd>@Model.Player.WinsGames Wins</dd>
+            <dd>@(Model.Player.PlayedGames - Model.Player.WinsGames) Loses</dd>
+            <dd class="pie" />
+        </dl>
+    </div>
+}
