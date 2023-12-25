@@ -1,6 +1,7 @@
 ﻿using Checkers.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MySql.Data.MySqlClient;
 
 namespace Checkers.Pages.Shared
 {
@@ -8,41 +9,55 @@ namespace Checkers.Pages.Shared
     {
         public IActionResult OnPostSignIn(string login, string password)
         {
-            UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
-            int id = context.GetUser(login, password);
-            if (id >= 0)
+            try
             {
-                HttpContext.Session.SetInt32("userid", id);
-                return RedirectToPage("Index");
+                UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
+                int id = context.GetUser(login, password);
+                if (id >= 0)
+                {
+                    HttpContext.Session.SetInt32("userid", id);
+                    return RedirectToPage("Index");
+                }
+                else
+                {
+                    // TestString = id switch
+                    // {
+                    //     -1 => "Wrong password",
+                    //     -2 => "Wrong login",
+                    //     _ => "Something wrong"
+                    // };
+                    return Page();
+                }
             }
-            else
+            catch (MySqlException)
             {
-                // TestString = id switch
-                // {
-                //     -1 => "Wrong password",
-                //     -2 => "Wrong login",
-                //     _ => "Something wrong"
-                // };
-                return Page();
+                return RedirectToPage("/Error");
             }
         }
         public IActionResult OnPostRegister(string login, string password, string repeatPassword, string email)
         {
-            UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
-            if (password == repeatPassword && context.AddNewUser(login, password, email, out int id))
+            try
             {
-                HttpContext.Session.SetInt32("userid", id);
-                return RedirectToPage("Index");
+                UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
+                if (password == repeatPassword && context.AddNewUser(login, password, email, out int id))
+                {
+                    HttpContext.Session.SetInt32("userid", id);
+                    return RedirectToPage("Index");
+                }
+                else
+                {
+                    // TestString = id switch
+                    // {
+                    //     -1 => "Wrong password",
+                    //     -2 => "Wrong login",
+                    //     _ => "Something wrong"
+                    // };
+                    return Page();
+                }
             }
-            else
+            catch (MySqlException)
             {
-                // TestString = id switch
-                // {
-                //     -1 => "Wrong password",
-                //     -2 => "Wrong login",
-                //     _ => "Something wrong"
-                // };
-                return Page();
+                return RedirectToPage("/Error");
             }
         }
 
@@ -51,8 +66,15 @@ namespace Checkers.Pages.Shared
             int? id = HttpContext.Session.GetInt32("userid");
             if (id.HasValue)
             {
-                UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
-                return context.GetUser(id.Value).Name;
+                try
+                {
+                    UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
+                    return context.GetUser(id.Value).Name;
+                }
+                catch (MySqlException)
+                {
+                    return "Error";
+                }
             }
             else
                 return "Quest";

@@ -1,6 +1,7 @@
 using Checkers.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using MySql.Data.MySqlClient;
 
 namespace Checkers.Pages
 {
@@ -9,27 +10,41 @@ namespace Checkers.Pages
         public User Player { get; private set; }
         public IActionResult OnGet()
         {
-            Player = GetUser();
-            return Player != null ? Page() : RedirectToPage("/Index");
+            try
+            {
+                Player = GetUser();
+                return Player != null ? Page() : RedirectToPage("/Index");
+            }
+            catch (MySqlException)
+            {
+                return RedirectToPage("/Error");
+            }
         }
         public IActionResult OnPostEdit(string username, bool passwordchanged, string password, string reppassword, string email)
         {
-            int id = HttpContext.Session.GetInt32("userid").Value;
-            UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
-            if (passwordchanged)
+            try
             {
-                if (!string.IsNullOrWhiteSpace(password) && password == reppassword)
+                int id = HttpContext.Session.GetInt32("userid").Value;
+                UsersContext context = HttpContext.RequestServices.GetService<UsersContext>();
+                if (passwordchanged)
                 {
-                    context.ChangeUser(id, password, username, email);
-                    return RedirectToPage("/Profile/" + id);
+                    if (!string.IsNullOrWhiteSpace(password) && password == reppassword)
+                    {
+                        context.ChangeUser(id, password, username, email);
+                        return RedirectToPage("/Profile/" + id);
+                    }
+                    else
+                        return Page();
                 }
                 else
-                    return Page();
+                {
+                    context.ChangeUser(id, username, email);
+                    return RedirectToPage("/Profile/" + id);
+                }
             }
-            else
+            catch (MySqlException)
             {
-                context.ChangeUser(id, username, email);
-                return RedirectToPage("/Profile/" + id);
+                return RedirectToPage("/Error");
             }
         }
 

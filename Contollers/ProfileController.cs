@@ -1,5 +1,6 @@
 ﻿using Checkers.Models;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 
 namespace Checkers.Contollers
 {
@@ -19,10 +20,17 @@ namespace Checkers.Contollers
         [Route("Profile/Delete")]
         public IActionResult Delete()
         {
-            int id = HttpContext.Session.GetInt32("userid").Value;
-            UsersContext context = HttpContext.RequestServices.GetRequiredService<UsersContext>();
-            context.RemoveUser(id);
-            return Exit();
+            try
+            {
+                int id = HttpContext.Session.GetInt32("userid").Value;
+                UsersContext context = HttpContext.RequestServices.GetRequiredService<UsersContext>();
+                context.RemoveUser(id);
+                return Exit();
+            }
+            catch (MySqlException)
+            {
+                return RedirectToPage("/Error");
+            }
         }
     }
 }
